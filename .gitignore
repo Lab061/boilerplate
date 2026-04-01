@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+
+# SST
+.sst/
+sst-env.d.ts
+**/sst-env.d.ts
+
+# Build output
+packages/frontend/dist/
+packages/functions/.build/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Git
+.worktrees/
