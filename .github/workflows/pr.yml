@@ -36,13 +36,14 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - run: npm ci
+      - id: install
+        run: npm ci
 
       - name: Lint
         run: npm run lint
 
       - name: Format
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: npm run format
 
   test:
@@ -62,7 +63,7 @@ jobs:
         run: npm test
 
       - name: Test with coverage
-        run: npm run test:coverage --workspace=@my-app/functions
+        run: npm run test:coverage --workspace=packages/functions
 
       - name: Coverage summary
         if: always()
@@ -87,4 +88,4 @@ jobs:
       - run: npm ci
 
       - name: Build frontend
-        run: npm run build --workspace=@my-app/frontend
+        run: npm run build --workspace=packages/frontend

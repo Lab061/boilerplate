@@ -11,15 +11,18 @@
     "undeploy": "npx sst remove",
     "test": "npm test --workspaces --if-present",
     "typecheck": "tsc -b packages/core packages/functions packages/frontend",
-    "lint": "oxlint",
+    "lint": "oxlint --deny-warnings",
     "lint:fix": "oxlint --fix",
     "format": "prettier --check .",
     "format:fix": "prettier --write .",
     "prepare": "husky"
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": "oxlint",
-    "*.{ts,tsx,js,jsx,json,css,md}": "prettier --write"
+    "*.{ts,tsx,js,jsx}": [
+      "oxlint --deny-warnings",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": "prettier --write"
   },
   "devDependencies": {
     "husky": "^9.1.7",
