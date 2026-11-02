@@ -4,16 +4,16 @@
 
 ## Stack
 
-| Layer          | Technology                               |
-| -------------- | ---------------------------------------- |
-| IaC            | SST v3                                   |
-| Frontend       | Vite + React 19 (SPA)                    |
-| Backend        | Node.js Lambda handlers                  |
-| Auth           | AWS Cognito (JWT)                        |
-| Database       | DynamoDB (single-table, ElectroDB ORM)   |
-| Validation     | Zod v4                                   |
-| Testing        | Vitest                                   |
-| CI/CD          | GitHub Actions                           |
+| Layer      | Technology                             |
+| ---------- | -------------------------------------- |
+| IaC        | SST v3                                 |
+| Frontend   | Vite + React 19 (SPA)                  |
+| Backend    | Node.js Lambda handlers                |
+| Auth       | AWS Cognito (JWT)                      |
+| Database   | DynamoDB (single-table, ElectroDB ORM) |
+| Validation | Zod v4                                 |
+| Testing    | Vitest                                 |
+| CI/CD      | GitHub Actions                         |
 
 ## Quick Start
 
@@ -49,23 +49,23 @@ boilerplate/
 
 ## Commands
 
-| Command                 | Description                            |
-| ----------------------- | -------------------------------------- |
-| `npx sst dev`           | Start dev environment with live reload |
-| `npx sst deploy`        | Deploy to default stage                |
-| `npm test`              | Run all tests                          |
-| `npm run typecheck`     | Typecheck all packages                 |
-| `npm run format`        | Check formatting                       |
-| `npm run format:fix`    | Fix formatting                         |
+| Command              | Description                            |
+| -------------------- | -------------------------------------- |
+| `npx sst dev`        | Start dev environment with live reload |
+| `npx sst deploy`     | Deploy to default stage                |
+| `npm test`           | Run all tests                          |
+| `npm run typecheck`  | Typecheck all packages                 |
+| `npm run format`     | Check formatting                       |
+| `npm run format:fix` | Fix formatting                         |
 
 ## Deployment
 
 ### Environments
 
-| Stage        | Trigger                    | Domain                        |
-| ------------ | -------------------------- | ----------------------------- |
-| `testing`    | Push to `master`           | `api.testing.{TLD}`           |
-| `production` | GitHub Release published   | `api.{TLD}`                   |
+| Stage        | Trigger                  | Domain              |
+| ------------ | ------------------------ | ------------------- |
+| `testing`    | Push to `master`         | `api.testing.{TLD}` |
+| `production` | GitHub Release published | `api.{TLD}`         |
 
 ### Required GitHub Secrets
 

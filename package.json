@@ -2,7 +2,9 @@
   "name": "my-app",
   "private": true,
   "type": "module",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "dev": "npx sst dev",
     "deploy": "npx sst deploy",
@@ -20,6 +22,7 @@
     "husky": "^9.1.7",
     "lint-staged": "^16.1.0",
     "prettier": "^3.5.3",
+    "sst": "^4.17.2",
     "typescript": "^6.0.2"
   }
 }

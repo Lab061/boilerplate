@@ -5,6 +5,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 <!-- TODO: Replace with your project description -->
+
 [Project Name] — a serverless full-stack application on AWS.
 
 ## Stack

@@ -1,12 +1,14 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { makeApiEvent } from "./helpers.js";
 
 const mockSend = vi.fn();
 vi.mock("@aws-sdk/client-cognito-identity-provider", () => ({
-  CognitoIdentityProviderClient: vi.fn().mockImplementation(() => ({
-    send: mockSend,
-  })),
-  SignUpCommand: vi.fn().mockImplementation((input) => input),
+  CognitoIdentityProviderClient: vi.fn(function () {
+    return { send: mockSend };
+  }),
+  SignUpCommand: vi.fn(function (input) {
+    return input;
+  }),
 }));
 
 const mockCreateGo = vi.fn().mockResolvedValue({});
@@ -37,6 +39,17 @@ describe("POST /auth/register", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
+
+  afterEach(() => {
+    vi.unstubAllEnvs();
+    vi.restoreAllMocks();
+  });
+
+  const validInput = {
+    email: "test@example.com",
+    name: "Test User",
+    password: "password123",
+  };
 
   it("should register a user successfully", async () => {
     mockSend.mockResolvedValueOnce({ UserSub: "user-123" });
@@ -80,5 +93,53 @@ describe("POST /auth/register", () => {
 
     const result = (await handler(event as any, {} as any, {} as any)) as any;
     expect(result.statusCode).toBe(409);
+  });
+
+  it("should return 403 when the email domain is not allowed", async () => {
+    vi.stubEnv("ALLOWED_SIGNUP_DOMAINS", "allowed.com, other.com");
+
+    const event = makeApiEvent("POST", "/auth/register", validInput);
+
+    const result = (await handler(event as any, {} as any, {} as any)) as any;
+    expect(result.statusCode).toBe(403);
+    expect(mockSend).not.toHaveBeenCalled();
+  });
+
+  it("should register when the email domain is allowed", async () => {
+    vi.stubEnv("ALLOWED_SIGNUP_DOMAINS", "other.com, example.com");
+    mockSend.mockResolvedValueOnce({ UserSub: "user-456" });
+
+    const event = makeApiEvent("POST", "/auth/register", validInput);
+
+    const result = (await handler(event as any, {} as any, {} as any)) as any;
+    expect(result.statusCode).toBe(201);
+    expect(mockCreate).toHaveBeenCalledWith(
+      expect.objectContaining({ userId: "user-456", email: validInput.email })
+    );
+  });
+
+  it("should return 400 with Cognito's message for an invalid password", async () => {
+    const error = new Error("Password did not conform with policy");
+    error.name = "InvalidPasswordException";
+    mockSend.mockRejectedValueOnce(error);
+
+    const event = makeApiEvent("POST", "/auth/register", validInput);
+
+    const result = (await handler(event as any, {} as any, {} as any)) as any;
+    expect(result.statusCode).toBe(400);
+    expect(JSON.parse(result.body).error).toBe(
+      "Password did not conform with policy"
+    );
+  });
+
+  it("should return 500 without leaking details on an unexpected error", async () => {
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    mockSend.mockRejectedValueOnce(new Error("boom"));
+
+    const event = makeApiEvent("POST", "/auth/register", validInput);
+
+    const result = (await handler(event as any, {} as any, {} as any)) as any;
+    expect(result.statusCode).toBe(500);
+    expect(JSON.parse(result.body).error).toBe("Internal server error");
   });
 });

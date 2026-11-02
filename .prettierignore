@@ -2,3 +2,4 @@ node_modules
 .sst
 dist
 package-lock.json
+coverage
