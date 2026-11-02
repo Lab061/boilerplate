@@ -39,7 +39,10 @@ const AuthContext = createContext<AuthContextValue>(null!);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [idToken, setIdToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // Only a stored session needs an async restore; without one we are done.
+  const [isLoading, setIsLoading] = useState(
+    () => userPool.getCurrentUser() !== null
+  );
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   // Restore session on mount
@@ -54,8 +57,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setIsLoading(false);
         }
       );
-    } else {
-      setIsLoading(false);
     }
   }, []);
 

@@ -39,7 +39,7 @@ const authorizer = api.addAuthorizer({
   },
 });
 
-const authOptions = { auth: { jwt: { authorizer: authorizer.id } } };
+export const authOptions = { auth: { jwt: { authorizer: authorizer.id } } };
 
 // Protected routes — add your authenticated endpoints here
 // Example:
