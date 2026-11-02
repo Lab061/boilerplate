@@ -10,12 +10,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Stack
 
-- **IaC**: SST v3 (infrastructure defined in `infra/` directory)
+- **IaC**: SST v4 (infrastructure defined in `infra/` directory)
 - **Frontend**: Vite + React 19 (SPA, no SSR), deployed to CloudFront
 - **Backend**: Node.js Lambda handlers
 - **Auth**: Cognito User Pool with custom React UI, JWT-based (`Authorization: Bearer <idToken>`)
 - **Database**: DynamoDB single-table design with ElectroDB ORM
 - **Validation**: Zod v4 schemas for all API input/output; types are `z.infer<>` derived
+- **Tooling**: TypeScript 7 (native `tsc`), Oxlint, Prettier, Vitest
 
 ## Monorepo Structure
 
@@ -46,9 +47,22 @@ npm test
 # Typecheck all packages
 npm run typecheck
 
+# Lint (Oxlint, config in .oxlintrc.json)
+npm run lint
+
 # Format code
 npm run format:fix
 ```
+
+## Checks
+
+| Where              | Runs                                                                      |
+| ------------------ | ------------------------------------------------------------------------- |
+| Pre-commit (husky) | `lint-staged`: Oxlint on staged `ts/tsx/js/jsx`, Prettier on staged files |
+| Pre-push (husky)   | `npm run typecheck`, then `npm test`                                      |
+| PR CI (`pr.yml`)   | Parallel jobs: Typecheck, Lint & Format, Test (+ coverage comment), Build |
+
+Run `npm run lint && npm run typecheck && npm test` before pushing if you bypass the hooks.
 
 ## Architecture
 

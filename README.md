@@ -6,13 +6,14 @@
 
 | Layer      | Technology                             |
 | ---------- | -------------------------------------- |
-| IaC        | SST v3                                 |
+| IaC        | SST v4                                 |
 | Frontend   | Vite + React 19 (SPA)                  |
 | Backend    | Node.js Lambda handlers                |
 | Auth       | AWS Cognito (JWT)                      |
 | Database   | DynamoDB (single-table, ElectroDB ORM) |
 | Validation | Zod v4                                 |
 | Testing    | Vitest                                 |
+| Tooling    | TypeScript 7, Oxlint, Prettier         |
 | CI/CD      | GitHub Actions                         |
 
 ## Quick Start
@@ -55,8 +56,16 @@ boilerplate/
 | `npx sst deploy`     | Deploy to default stage                |
 | `npm test`           | Run all tests                          |
 | `npm run typecheck`  | Typecheck all packages                 |
+| `npm run lint`       | Lint with Oxlint                       |
+| `npm run lint:fix`   | Apply Oxlint auto-fixes                |
 | `npm run format`     | Check formatting                       |
 | `npm run format:fix` | Fix formatting                         |
+
+## Checks
+
+- **Pre-commit:** Oxlint and Prettier on staged files (`lint-staged`).
+- **Pre-push:** `npm run typecheck`, then `npm test`.
+- **Pull requests:** `.github/workflows/pr.yml` runs Typecheck, Lint & Format, Test (with a coverage comment) and Build as parallel jobs.
 
 ## Deployment
 
