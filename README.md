@@ -66,6 +66,7 @@ boilerplate/
 - **Pre-commit:** Oxlint and Prettier on staged files (`lint-staged`).
 - **Pre-push:** `npm run typecheck`, then `npm test`.
 - **Pull requests:** `.github/workflows/pr.yml` runs Typecheck, Lint & Format, Test (with a coverage comment) and Build as parallel jobs.
+  If you protect `master`, require those four checks by name.
 
 ## Deployment
 
@@ -88,7 +89,7 @@ boilerplate/
 
 ## Customizing
 
-1. Replace `my-app` and `@my-app` in all `package.json` files and `sst.config.ts`
+1. Replace `my-app` and `@my-app` in all `package.json` files and `sst.config.ts`, then run `npm install` and commit the regenerated `package-lock.json` (CI runs `npm ci`, which fails if the lockfile is out of sync)
 2. Replace `myapp` service name in `packages/core/src/entities.ts`
 3. Set your domain in the `TLD` environment variable
 4. Add your domain entities, schemas, and handlers following the existing patterns

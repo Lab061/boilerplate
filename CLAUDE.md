@@ -64,6 +64,8 @@ npm run format:fix
 
 Run `npm run lint && npm run typecheck && npm test` before pushing if you bypass the hooks.
 
+TypeScript 7 ships only the native `tsc`, not the JS compiler API. If you add a tool that imports `typescript` (typescript-eslint, ts-jest, vite-plugin-dts, ...), give it TS 6 through an alias such as `"typescript6": "npm:typescript@^6"` and point the tool at it; keep `tsc` on TS 7.
+
 ## Architecture
 
 ### DynamoDB Single-Table Design (ElectroDB)
