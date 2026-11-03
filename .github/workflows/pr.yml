@@ -8,9 +8,10 @@ permissions:
   contents: read
   pull-requests: write
 
+# Independent jobs run in parallel; the slowest one sets the wall-clock time.
 jobs:
-  checks:
-    name: Test, Format & Typecheck
+  typecheck:
+    name: Typecheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -22,17 +23,47 @@ jobs:
 
       - run: npm ci
 
-      - name: Typecheck
-        run: npm run typecheck
+      - run: npm run typecheck
+
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - id: install
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
 
       - name: Format
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
         run: npm run format
+
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
 
       - name: Test
         run: npm test
 
       - name: Test with coverage
-        run: npm run test:coverage --workspace=@my-app/functions
+        run: npm run test:coverage --workspace=packages/functions
 
       - name: Coverage summary
         if: always()
@@ -42,3 +73,19 @@ jobs:
           vite-config-path: vitest.config.ts
           comment-on: pr
           name: Backend Coverage
+
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      - name: Build frontend
+        run: npm run build --workspace=packages/frontend

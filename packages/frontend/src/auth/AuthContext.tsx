@@ -39,25 +39,22 @@ const AuthContext = createContext<AuthContextValue>(null!);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [idToken, setIdToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  // Read the stored user once: only a stored session needs an async restore.
+  const [storedUser] = useState(() => userPool.getCurrentUser());
+  const [isLoading, setIsLoading] = useState(storedUser !== null);
   const [unverifiedEmail, setUnverifiedEmail] = useState<string | null>(null);
 
   // Restore session on mount
   useEffect(() => {
-    const user = userPool.getCurrentUser();
-    if (user) {
-      user.getSession(
-        (err: Error | null, session: CognitoUserSession | null) => {
-          if (!err && session?.isValid()) {
-            setIdToken(session.getIdToken().getJwtToken());
-          }
-          setIsLoading(false);
+    storedUser?.getSession(
+      (err: Error | null, session: CognitoUserSession | null) => {
+        if (!err && session?.isValid()) {
+          setIdToken(session.getIdToken().getJwtToken());
         }
-      );
-    } else {
-      setIsLoading(false);
-    }
-  }, []);
+        setIsLoading(false);
+      }
+    );
+  }, [storedUser]);
 
   // Refresh token before expiry (every 45 min; Cognito tokens last ~60 min)
   useEffect(() => {

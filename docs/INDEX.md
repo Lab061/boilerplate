@@ -5,13 +5,13 @@
 
 ## Status Key
 
-| Status        | Meaning                                  |
-| ------------- | ---------------------------------------- |
-| `draft`       | Incomplete, not ready for implementation |
+| Status        | Meaning                                   |
+| ------------- | ----------------------------------------- |
+| `draft`       | Incomplete, not ready for implementation  |
 | `ready`       | Fully specified, ready for implementation |
-| `in-progress` | Currently being implemented              |
-| `done`        | Implemented and verified                 |
-| `blocked`     | Waiting on a dependency or decision      |
+| `in-progress` | Currently being implemented               |
+| `done`        | Implemented and verified                  |
+| `blocked`     | Waiting on a dependency or decision       |
 
 ## PRDs
 
