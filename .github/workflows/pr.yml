@@ -16,14 +16,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
-      - run: npm run typecheck
+      - run: pnpm typecheck
 
   lint:
     name: Lint & Format
@@ -31,20 +33,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
+          cache: pnpm
 
       - id: install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
 
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
 
       - name: Format
         if: ${{ !cancelled() && steps.install.outcome == 'success' }}
-        run: npm run format
+        run: pnpm format
 
   test:
     name: Test
@@ -52,18 +56,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - name: Test
-        run: npm test
+        run: pnpm test
 
       - name: Test with coverage
-        run: npm run test:coverage --workspace=packages/functions
+        run: pnpm --filter ./packages/functions test:coverage
 
       - name: Coverage summary
         if: always()
@@ -80,12 +86,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - name: Build frontend
-        run: npm run build --workspace=packages/frontend
+        run: pnpm --filter ./packages/frontend build

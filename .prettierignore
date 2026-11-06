@@ -1,5 +1,5 @@
 node_modules
 .sst
 dist
-package-lock.json
+pnpm-lock.yaml
 coverage

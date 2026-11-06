@@ -19,24 +19,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - name: Typecheck
-        run: npm run typecheck
+        run: pnpm typecheck
 
       - name: Lint
-        run: npm run lint
+        run: pnpm lint
 
       - name: Format
-        run: npm run format
+        run: pnpm format
 
       - name: Test
-        run: npm test
+        run: pnpm test
 
   deploy:
     name: Deploy to Testing
@@ -46,12 +48,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: pnpm/action-setup@v4
+
       - uses: actions/setup-node@v4
         with:
           node-version-file: .nvmrc
-          cache: npm
+          cache: pnpm
 
-      - run: npm ci
+      - run: pnpm install --frozen-lockfile
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -60,6 +64,6 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Deploy
-        run: npx sst deploy --stage testing
+        run: pnpm sst deploy --stage testing
         env:
           TLD: ${{ vars.TLD }}

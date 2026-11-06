@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.1018.0",
-    "@my-app/core": "*",
+    "@my-app/core": "workspace:*",
     "zod": "^4.3.6"
   },
   "devDependencies": {

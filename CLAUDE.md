@@ -33,25 +33,25 @@ sst.config.ts     # SST entry point (imports from infra/)
 
 ```bash
 # Install dependencies
-npm install
+pnpm install
 
 # Start SST dev environment (deploys to AWS, live Lambda reloading)
-npx sst dev
+pnpm sst dev
 
 # Deploy to a specific stage
-npx sst deploy --stage testing
+pnpm sst deploy --stage testing
 
 # Run all tests
-npm test
+pnpm test
 
 # Typecheck all packages
-npm run typecheck
+pnpm typecheck
 
 # Lint (Oxlint, config in .oxlintrc.json)
-npm run lint
+pnpm lint
 
 # Format code
-npm run format:fix
+pnpm format:fix
 ```
 
 ## Checks
@@ -59,10 +59,10 @@ npm run format:fix
 | Where              | Runs                                                                      |
 | ------------------ | ------------------------------------------------------------------------- |
 | Pre-commit (husky) | `lint-staged`: Oxlint on staged `ts/tsx/js/jsx`, Prettier on staged files |
-| Pre-push (husky)   | `npm run typecheck`, then `npm test`                                      |
+| Pre-push (husky)   | `pnpm typecheck`, then `pnpm test`                                        |
 | PR CI (`pr.yml`)   | Parallel jobs: Typecheck, Lint & Format, Test (+ coverage comment), Build |
 
-Run `npm run lint && npm run typecheck && npm test` before pushing if you bypass the hooks.
+Run `pnpm lint && pnpm typecheck && pnpm test` before pushing if you bypass the hooks.
 
 TypeScript 7 ships only the native `tsc`, not the JS compiler API. If you add a tool that imports `typescript` (typescript-eslint, ts-jest, vite-plugin-dts, ...), give it TS 6 through an alias such as `"typescript6": "npm:typescript@^6"` and point the tool at it; keep `tsc` on TS 7.
 
