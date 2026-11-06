@@ -2,14 +2,11 @@
   "name": "my-app",
   "private": true,
   "type": "module",
-  "workspaces": [
-    "packages/*"
-  ],
   "scripts": {
-    "dev": "npx sst dev",
-    "deploy": "npx sst deploy",
-    "undeploy": "npx sst remove",
-    "test": "npm test --workspaces --if-present",
+    "dev": "sst dev",
+    "deploy": "sst deploy",
+    "undeploy": "sst remove",
+    "test": "pnpm -r --if-present test",
     "typecheck": "tsc -b packages/core packages/functions packages/frontend",
     "lint": "oxlint --deny-warnings",
     "lint:fix": "oxlint --fix",
@@ -31,5 +28,6 @@
     "prettier": "^3.5.3",
     "sst": "^4.17.2",
     "typescript": "^7.0.2"
-  }
+  },
+  "packageManager": "pnpm@10.33.0"
 }

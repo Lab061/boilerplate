@@ -23,10 +23,10 @@
 nvm use
 
 # Install dependencies
-npm install
+pnpm install
 
 # Start SST dev environment (deploys to AWS with live reloading)
-npx sst dev
+pnpm sst dev
 ```
 
 ## Project Structure
@@ -50,21 +50,21 @@ boilerplate/
 
 ## Commands
 
-| Command              | Description                            |
-| -------------------- | -------------------------------------- |
-| `npx sst dev`        | Start dev environment with live reload |
-| `npx sst deploy`     | Deploy to default stage                |
-| `npm test`           | Run all tests                          |
-| `npm run typecheck`  | Typecheck all packages                 |
-| `npm run lint`       | Lint with Oxlint                       |
-| `npm run lint:fix`   | Apply Oxlint auto-fixes                |
-| `npm run format`     | Check formatting                       |
-| `npm run format:fix` | Fix formatting                         |
+| Command           | Description                            |
+| ----------------- | -------------------------------------- |
+| `pnpm sst dev`    | Start dev environment with live reload |
+| `pnpm sst deploy` | Deploy to default stage                |
+| `pnpm test`       | Run all tests                          |
+| `pnpm typecheck`  | Typecheck all packages                 |
+| `pnpm lint`       | Lint with Oxlint                       |
+| `pnpm lint:fix`   | Apply Oxlint auto-fixes                |
+| `pnpm format`     | Check formatting                       |
+| `pnpm format:fix` | Fix formatting                         |
 
 ## Checks
 
 - **Pre-commit:** Oxlint and Prettier on staged files (`lint-staged`).
-- **Pre-push:** `npm run typecheck`, then `npm test`.
+- **Pre-push:** `pnpm typecheck`, then `pnpm test`.
 - **Pull requests:** `.github/workflows/pr.yml` runs Typecheck, Lint & Format, Test (with a coverage comment) and Build as parallel jobs.
   If you protect `master`, require those four checks by name.
 
@@ -89,7 +89,7 @@ boilerplate/
 
 ## Customizing
 
-1. Replace `my-app` and `@my-app` in all `package.json` files and `sst.config.ts`, then run `npm install` and commit the regenerated `package-lock.json` (CI runs `npm ci`, which fails if the lockfile is out of sync)
+1. Replace `my-app` and `@my-app` in all `package.json` files and `sst.config.ts`, then run `pnpm install` and commit the regenerated `pnpm-lock.yaml` (CI runs `pnpm install --frozen-lockfile`, which fails if the lockfile is out of sync)
 2. Replace `myapp` service name in `packages/core/src/entities.ts`
 3. Set your domain in the `TLD` environment variable
 4. Add your domain entities, schemas, and handlers following the existing patterns
